@@ -7,15 +7,17 @@ from datetime import datetime
 # read data - TODO add here robust Train/Test split
 df = pd.read_csv('./raw_data/fifa19/data.csv')
 
-# extract all features
+# extract and save all features
 df = (extract(df))
+    # extract and save for val and test...
 df.to_csv('./features/all_features_' + str(datetime.now()))
 
 # train models
-
+    # read features and concat dataframes
 models = train_models(df)
 
 # prediction
+
 
 # enssamble
 

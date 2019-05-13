@@ -1,7 +1,7 @@
 import sklearn
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-
+from ensemble_weapons.blend_proba import blend_proba
 
 
 # define all desirable models
@@ -21,3 +21,13 @@ def train_models(X, y):
     for model_name, model in models_dict.items():
         print(model_name + ' is training...')
         model.fit(X,y)
+
+
+
+
+def compute_hodor_blending(X_train,y,X_test):
+    models_dict= create_models(X_train)
+    for model_name , model in models_dict.items():
+        #TODO - configure all args to that beast
+        _ , _ , score = blend_proba(model,X_train,y,X_test,clf_name=model_name,return_score=True
+    pass

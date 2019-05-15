@@ -6,15 +6,15 @@ class FeatureExtractionTemplate():
     def __init__(self, init_param):
         self.init_param = init_param
 
-    def fit(X):
+    def fit(self,X):
         return X
 
-    def transform(X):
+    def transform(self,X):
         return X
 
-    def fit_transform(X):
-        _X_ = fit(X)
-        return transform(_X_)
+    def fit_transform(self,X):
+        self._X_ = self.fit(X)
+        return self.transform(self._X_)
 
 
 class BasicStatisticFeatures():

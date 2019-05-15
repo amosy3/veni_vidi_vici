@@ -2,8 +2,6 @@ from sklearn.model_selection import StratifiedKFold
 
 from sklearn.metrics import log_loss, accuracy_score
 import numpy as np
-import pandas as pd
-import random
 from hashlib import md5
 import json
 
@@ -64,11 +62,11 @@ def blend_proba(clf, X_train, y, X_test, nfolds=5, save_preds="",
     print("storing meta predictions at: {}".format(save_test_only))
 
     dataset_blend_test = clf.predict(X_test)
-    np.savetxt("{}_{}_{}_test.txt".format((save_test_only,clf_name,avg_loss,id),dataset_blend_test))
+    np.savetxt("{}_{}_{}_test.txt".format(save_test_only,clf_name,avg_loss,id),dataset_blend_test)
     d = {}
     d["stacker"] = clf.get_params()
     d["generalizers"] = generalizers_params
-    with open("{}_{}_{}_params.json".format((save_test_only,clf_name,avg_loss, id), 'wb')) as f:
+    with open("{}_{}_{}_params.json".format(save_test_only,clf_name,avg_loss, id), 'wb') as f:
       json.dump(d, f)
 
   if len(save_params)>0:
@@ -77,7 +75,7 @@ def blend_proba(clf, X_train, y, X_test, nfolds=5, save_preds="",
     d["name"] = clf_name
     d["params"] = { k:(v.get_params() if "\n" in str(v) or "<" in str(v) else v) for k,v in clf.get_params().items()}
     d["generalizers"] = generalizers_params
-    with open("{}_{}_{}_{}_params.json".format((save_params,clf_name,avg_loss, id), 'wb')) as f:
+    with open("{}_{}_{}_{}_params.json".format(save_params,clf_name,avg_loss, id), 'wb') as f:
       json.dump(d, f)
 
   if np.unique(y).shape[0] == 2: # when binary classification only return positive class proba

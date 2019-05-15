@@ -29,5 +29,5 @@ def compute_hodor_blending(X_train,y,X_test):
     models_dict= create_models(X_train)
     for model_name , model in models_dict.items():
         #TODO - configure all args to that beast
-        _ , _ , score = blend_proba(model,X_train,y,X_test,clf_name=model_name,return_score=True
+        _ , _ , score = blend_proba(model,X_train,y,X_test,clf_name=model_name,return_score=True)
     pass

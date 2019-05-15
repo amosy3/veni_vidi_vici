@@ -6,3 +6,5 @@ pyarrow
 scikit-learn
 nltk
 networkx
+xgboost
+lightgbm

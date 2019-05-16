@@ -43,9 +43,8 @@ def blend_proba(clf, X_train, y, X_test, nfolds=5, save_preds="",
 
     if minimal_loss > 0 and loss > minimal_loss and i == 0:
       return False, False
-    fold_preds = np.argmax(fold_preds, axis=1)
     print("Accuracy:      {}".format(accuracy_score(fold_y_test,fold_preds)))
-    print("AUC: {}".format(roc_auc_score(fold_y_test,fold_preds)))
+    print("AUC: {}".format(roc_auc_score(fold_y_test,fold_preds[:,1])))
 
   avg_loss = loss / float(i+1)
   print("\nAverage loss:\t{}\n".format(avg_loss))

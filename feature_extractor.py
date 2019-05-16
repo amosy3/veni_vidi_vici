@@ -71,6 +71,7 @@ def combine_features(features_dir,dataset_type,ids):
     all_features_df = pd.DataFrame(data = {"Id":ids})
     features_files = [x for x in os.listdir(features_dir) if x.startswith(dataset_type)]
     for file in features_files:
+        print("Reading feature {}".format(file))
         try:
             df_path = os.path.join(features_dir,file)
             df = pd.read_pickle(df_path)

@@ -1,15 +1,17 @@
 from collections import defaultdict
 from glob import glob
 import sys
+import os
 
-glob_files = sys.argv[1]
-loc_outfile = sys.argv[2]
+
+glob_files = '../../models_predictions/*.csv'
+loc_outfile ="../../models_predictions/ensembles/avarage_ensemble.csv"
 
 def kaggle_bag(glob_files, loc_outfile, method="average", weights="uniform"):
   if method == "average":
     scores = defaultdict(float)
   with open(loc_outfile,"w") as outfile:
-    for i, glob_file in enumerate( glob(glob_files) ):
+    for i, glob_file in enumerate(glob(glob_files)):
       print("parsing: {}".format(glob_file))
       # sort glob_file by first column, ignoring the first line
       lines = open(glob_file).readlines()

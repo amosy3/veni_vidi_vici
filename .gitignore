@@ -2,6 +2,7 @@
 venv
 features
 raw_data
+models_predictions
 .ipynb_checkpoints
 *.pyc
 __pycache__

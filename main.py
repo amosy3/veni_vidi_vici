@@ -49,28 +49,31 @@ test_index = df_test.index
 
 X_train = df_train.values
 X_test = df_test.values
-#Test on simple features for now
 
-
-
-
-# extract and save for val and test...
-#df_train.to_csv('./features/all_features_' + str(datetime.now()))
 
 # train models
-
-
 models_dict = create_models(X_train)
 # models = compute_hodor_blending(X_train,y_train,X_test)
 
-best_model = train_models(df_train,y_train,models_dict)
+best_auc_dict = train_models(df_train,y_train,models_dict)
+
 
 
 # prediction
 
-predict_models(df_test,models_dict)
+
+for (model_name , (best_fold_model , best_fold_auc)) in best_auc_dict.items():
+    print("Fitting best model of type {} to the whole training set".format(model_name))
+    best_fold_model.fit(X_train,y_train)
+
+
+predict_models(df_test,best_auc_dict)
+
 assert df_test.shape[0] == 200000
 # ensemble
+
+
+
 
 
 # submission

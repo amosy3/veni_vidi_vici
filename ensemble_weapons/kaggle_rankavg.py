@@ -3,8 +3,8 @@ from collections import defaultdict
 from glob import glob
 import sys
 
-glob_files = sys.argv[1]
-loc_outfile = sys.argv[2]
+glob_files = '../../models_predictions/*.csv'
+loc_outfile ="../../models_predictions/ensembles/ranked_ensemble.csv"
 
 def kaggle_bag(glob_files, loc_outfile):
   with open(loc_outfile,"w") as outfile:

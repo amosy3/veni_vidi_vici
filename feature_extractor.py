@@ -67,13 +67,14 @@ def basic_time_features(df: pd.DataFrame):
 
 
 def combine_features(features_dir,dataset_type,ids):
+
     assert dataset_type in ['train','test']
     all_features_df = pd.DataFrame(data = {"Id":ids})
     features_files = [x for x in os.listdir(features_dir) if x.startswith(dataset_type)]
     for file in features_files:
-        df_path = os.path.join(features_dir,file)
-        df = pd.read_pickle(df_path)
         try:
+            df_path = os.path.join(features_dir,file)
+            df = pd.read_pickle(df_path)
             all_features_df = pd.merge(all_features_df, df,on='Id')
         except:
             raise Exception("Feature {} is bad".format(file))

@@ -23,23 +23,26 @@ def create_models(X):
 
 
 
-def train_models(X, y,models_dict):
+def train_models(df,y,models_dict):
+    X = df.values
     for model_name, model in models_dict.items():
         print(model_name + ' is training...')
         model.fit(X,y)
 
 
 
-def predict_models(X,models_dict):
+def predict_models(df,models_dict):
     prediction_df = pd.DataFrame()
-    prediction_df["Id"] = X["Id"]
+    prediction_df = prediction_df.reindex_like(df)
+    X = df.values
+    prediction_df.to_csv()
     for model_name, model in models_dict.items():
         prediction_path = os.path.join(predictions_folder,model_name) + ".csv"
         print(model_name + ' is predicting... ')
         preds = model.predict_proba(X)
         prediction_df["Predicted"] = preds[:,1]
-
-        prediction_df.to_csv(prediction_path)
+        print("Saving model to {}".format(prediction_path))
+        prediction_df['Predicted'].to_csv(prediction_path,header=True)
 
 
 

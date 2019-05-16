@@ -63,12 +63,12 @@ X_test = df_test.values
 models_dict = create_models(X_train)
 # models = compute_hodor_blending(X_train,y_train,X_test)
 
-train_models(X_train,y_train,models_dict)
+train_models(df_train,y_train,models_dict)
 
 
 # prediction
 
-predict_models(X_train,models_dict)
+predict_models(df_train,models_dict)
 
 # ensemble
 

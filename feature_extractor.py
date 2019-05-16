@@ -67,7 +67,6 @@ def basic_time_features(df: pd.DataFrame):
 
 
 def combine_features(features_dir,dataset_type,ids):
-
     assert dataset_type in ['train','test']
     all_features_df = pd.DataFrame(data = {"Id":ids})
     features_files = [x for x in os.listdir(features_dir) if x.startswith(dataset_type)]

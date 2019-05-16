@@ -1,7 +1,12 @@
 import sklearn
 import numpy as np
+import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from ensemble_weapons.blend_proba import blend_proba
+import os
+
+
+predictions_folder = '../models_predictions'
 
 
 # define all desirable models
@@ -17,11 +22,28 @@ def create_models(X):
     return models_dict
 
 
-def train_models(X, y):
-    models_dict = create_models(X)
+
+def train_models(X, y,models_dict):
     for model_name, model in models_dict.items():
         print(model_name + ' is training...')
         model.fit(X,y)
+
+
+
+def predict_models(X,models_dict):
+    prediction_df = pd.DataFrame()
+    prediction_df["Id"] = X["Id"]
+    for model_name, model in models_dict.items():
+        prediction_path = os.path.join(predictions_folder,model_name) + ".csv"
+        print(model_name + ' is predicting... ')
+        preds = model.predict_proba(X)
+        prediction_df["Predicted"] = preds[:,1]
+
+        prediction_df.to_csv(prediction_path)
+
+
+
+
 
 
 

@@ -1,6 +1,6 @@
 import pandas as pd
 from feature_extractor import extract , select_simple_features, combine_features
-from models_trainer import train_models,compute_hodor_blending
+from models_trainer import train_models,compute_hodor_blending , create_models , predict_models
 from datetime import datetime
 import os
 
@@ -54,16 +54,21 @@ X_test = df_test.values
 
 
 
-
 # extract and save for val and test...
 #df_train.to_csv('./features/all_features_' + str(datetime.now()))
 
 # train models
 
-models = compute_hodor_blending(X_train,y_train,X_test)
+
+models_dict = create_models(X_train)
+# models = compute_hodor_blending(X_train,y_train,X_test)
+
+train_models(X_train,y_train,models_dict)
+
 
 # prediction
 
+predict_models(X_train,models_dict)
 
 # ensemble
 

@@ -5,6 +5,9 @@ import numpy as np
 from hashlib import md5
 import json
 
+
+
+
 def blend_proba(clf, X_train, y, X_test, nfolds=5, save_preds="",
                 save_test_only="", seed=300373, save_params="",
                 clf_name="XX", generalizers_params=[], minimal_loss=0,
@@ -26,7 +29,7 @@ def blend_proba(clf, X_train, y, X_test, nfolds=5, save_preds="",
 
     fold_preds = clf.predict_proba(fold_X_test)
     print("Logistic loss: {}".format(log_loss(fold_y_test,fold_preds)))
-    print("AUC: {}".format(roc_auc_score(fold_y_test,np.argmax(fold_preds,axis=1))))
+    print("AUC: {}".format(roc_auc_score(fold_y_test,fold_preds[:,1])))
 
     dataset_blend_train[test_index] = fold_preds
     if minimizer == "log_loss":

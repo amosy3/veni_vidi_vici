@@ -73,7 +73,10 @@ def combine_features(features_dir,dataset_type,ids):
     for file in features_files:
         df_path = os.path.join(features_dir,file)
         df = pd.read_pickle(df_path)
-        all_features_df = pd.merge(all_features_df, df,on='Id')
+        try:
+            all_features_df = pd.merge(all_features_df, df,on='Id')
+        except:
+            raise Exception("Feature {} is bad".format(file))
 
     return all_features_df
 

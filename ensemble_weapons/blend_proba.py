@@ -1,6 +1,6 @@
 from sklearn.model_selection import StratifiedKFold
 
-from sklearn.metrics import log_loss, accuracy_score
+from sklearn.metrics import log_loss, accuracy_score,roc_auc_score
 import numpy as np
 from hashlib import md5
 import json
@@ -11,14 +11,13 @@ def blend_proba(clf, X_train, y, X_test, nfolds=5, save_preds="",
                 return_score=False, minimizer="log_loss"):
   print("\nBlending with classifier:\n\t{}".format(clf))
   skf = StratifiedKFold(nfolds,shuffle=True,random_state=seed)
-  folds = list(skf.get_n_splits(X_train, y))
-  print(X_train.shape)
+  folds = skf.split(X_train, y)
   dataset_blend_train = np.zeros((X_train.shape[0],np.unique(y).shape[0]))
 
   #iterate through train set and train - predict folds
   loss = 0
   for i, (train_index, test_index) in enumerate( folds ):
-    print("Train Fold {}/{}}".format(i+1,nfolds))
+    print("Train Fold {}/{}".format(i+1,nfolds))
     fold_X_train = X_train[train_index]
     fold_y_train = y[train_index]
     fold_X_test = X_train[test_index]
@@ -27,6 +26,8 @@ def blend_proba(clf, X_train, y, X_test, nfolds=5, save_preds="",
 
     fold_preds = clf.predict_proba(fold_X_test)
     print("Logistic loss: {}".format(log_loss(fold_y_test,fold_preds)))
+    print("AUC: {}".format(roc_auc_score(fold_y_test,np.argmax(fold_preds,axis=1))))
+
     dataset_blend_train[test_index] = fold_preds
     if minimizer == "log_loss":
       loss += log_loss(fold_y_test,fold_preds)
@@ -41,8 +42,10 @@ def blend_proba(clf, X_train, y, X_test, nfolds=5, save_preds="",
       return False, False
     fold_preds = np.argmax(fold_preds, axis=1)
     print("Accuracy:      {}".format(accuracy_score(fold_y_test,fold_preds)))
+    print("AUC: {}".format(roc_auc_score(fold_y_test,fold_preds)))
+
   avg_loss = loss / float(i+1)
-  print("\nAverage:\t{}\n".format(avg_loss))
+  print("\nAverage loss:\t{}\n".format(avg_loss))
   #predict test set (better to take average on all folds, but this is quicker)
   print("Test Fold 1/1")
   clf.fit(X_train, y)

@@ -1,6 +1,7 @@
 from __future__ import division
 from collections import defaultdict
 from glob import glob
+from feature_extractor import quantile_normalize
 import sys
 
 glob_files = '../../models_predictions/*.csv'

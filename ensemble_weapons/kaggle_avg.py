@@ -2,10 +2,13 @@ from collections import defaultdict
 from glob import glob
 import sys
 import os
-
+import pandas as pd
+from sklearn import preprocessing
+from feature_extractor import quantile_normalize
 
 glob_files = '../../models_predictions/*.csv'
 loc_outfile ="../../models_predictions/ensembles/avarage_ensemble.csv"
+
 
 def kaggle_bag(glob_files, loc_outfile, method="average", weights="uniform"):
   if method == "average":
@@ -27,3 +30,6 @@ def kaggle_bag(glob_files, loc_outfile, method="average", weights="uniform"):
     print("wrote to {}".format(loc_outfile))
 
 kaggle_bag(glob_files, loc_outfile)
+
+
+# quantile_normalize('../../models_predictions')

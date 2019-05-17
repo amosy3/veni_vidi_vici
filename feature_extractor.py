@@ -93,6 +93,45 @@ def select_simple_features(df):
 
 
 
+def quantile_normalize(preds_folders):
+  """
+  Compute quantile normalization on prediction folder, save it to <preds_folders>/quantile_normed
+  :param preds_folders: folder that contains csv predictions
+  :return: None
+
+  """
+  all_preds_df = pd.DataFrame(columns=["Id"])
+  output_dir = os.path.join(preds_folders,'quantile_normed')
+  if not os.path.isdir(output_dir):
+    os.mkdir(output_dir)
+
+  pred_files = [x for x in os.listdir(preds_folders) if "csv" in x]
+  for file in pred_files:
+    df_path = os.path.join(preds_folders, file)
+    df = pd.read_csv(df_path)
+    all_preds_df["Id"] = df["Id"]
+    all_preds_df["Predicted_{}".format(file)] = df["Predicted"]
+
+
+  quantile_transformer = preprocessing.QuantileTransformer(random_state=0,n_quantiles=10000)
+  preds_quantiles = quantile_transformer.fit_transform(all_preds_df.ix[:,1:].values)
+  all_preds_df.iloc[:,1:] = preds_quantiles
+
+
+
+  for file in pred_files:
+    filename, _ = os.path.splitext(file)
+    df_path = os.path.join(output_dir, filename)+".csv"
+    out_df = pd.DataFrame()
+    out_df['Id'] = all_preds_df['Id']
+    out_df['Predicted'] = all_preds_df["Predicted_{}".format(file)]
+    out_df.to_csv(df_path)
+
+
+
+  print(1)
+
+
 
 
 def extract(df):
